@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { generateNewRow, getInitialFrame } from './functions/frame';
+import { TFramePixel } from './types';
 
 // create const arr with length 36
 const colors = {
@@ -18,14 +19,26 @@ function App() {
 		// from frame delete first row and add new row
 		setFrame((prevFrame) => [
 			...prevFrame.slice(8),
-			...generateNewRow(prevFrame[prevFrame.length - 1].x + 1),
+			...generateNewRow(prevFrame[prevFrame.length - 1].y + 1),
 		]);
+		setPlayer((prevPlayer) => ({
+			...prevPlayer,
+			y: prevPlayer.y + 1,
+		}));
 	}, [paused]);
 
 	useEffect(() => {
 		const interval = setInterval(updateFrame, 1000);
 		return () => clearInterval(interval);
 	}, [updateFrame]);
+
+	const handlePixelClick = (pixel: TFramePixel) => {
+		const isPlayerHere = pixel.x === player.x && pixel.y === player.y;
+		console.dir({
+			...pixel,
+			isPlayerHere,
+		});
+	};
 
 	return (
 		<div className='flex min-h-screen w-full justify-center items-center'>
@@ -46,6 +59,7 @@ function App() {
 						)}
 						<div
 							className='x-y'
+							onClick={() => handlePixelClick(pixel)}
 							children={
 								<p>
 									{pixel.x}/{pixel.y}
@@ -58,6 +72,7 @@ function App() {
 			<button onClick={() => setPaused(!paused)}>
 				{paused ? 'Play' : 'Pause'}
 			</button>
+			<button onClick={() => console.log(frame)}>Log pixels</button>
 		</div>
 	);
 }

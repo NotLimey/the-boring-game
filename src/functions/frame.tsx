@@ -6,11 +6,11 @@ const COL_LENGTH = 8;
 
 export function getInitialFrame(): Array<TFramePixel> {
 	const frame: TFramePixel[] = [];
-	for (let x = 0; x < ROW_LENGTH; x++) {
-		for (let y = 0; y < COL_LENGTH; y++) {
+	for (let y = 0; y < COL_LENGTH; y++) {
+		for (let x = 0; x < ROW_LENGTH; x++) {
 			frame.push({
-				color: x < 5 ? 'sky' : 'dirt',
-				content: x === 5 && <div className='grass' />,
+				color: y < 5 ? 'sky' : 'dirt',
+				content: y === 5 && <div className='grass' />,
 				x: x + 1,
 				y: y + 1,
 			});
@@ -19,10 +19,10 @@ export function getInitialFrame(): Array<TFramePixel> {
 	return frame;
 }
 
-export function generateNewRow(x: number): Array<TFramePixel> {
+export function generateNewRow(y: number): Array<TFramePixel> {
 	const newRow = [];
-	for (let y = 0; y < COL_LENGTH; y++) {
-		newRow.push(getNewFrame(x, y));
+	for (let x = 0; x < COL_LENGTH; x++) {
+		newRow.push(getNewFrame(x + 1, y));
 	}
 	return newRow;
 }
