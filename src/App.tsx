@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { generateNewRow, getInitialFrame } from './functions/frame';
 import { TFramePixel } from './types';
@@ -13,11 +13,11 @@ const colors = {
 function App() {
 	const [frame, setFrame] = useState(getInitialFrame());
 	const [paused, setPaused] = useState(true);
-	const [player, setPlayer] = useState({ x: 4, y: 4 });
-	const [secondsElapsed, setSecondsElapsed] = useState(0);
+	const [player, setPlayer] = useState({ x: 4, y: 4, tick: 0 });
+	const currentTick = useRef(0);
 
 	const updateFrame = useCallback(() => {
-		setSecondsElapsed((prev) => prev + 1);
+		currentTick.current++;
 		setFrame((prevFrame) => [
 			...prevFrame.slice(8),
 			...generateNewRow(prevFrame[prevFrame.length - 1].y + 1),
@@ -29,8 +29,65 @@ function App() {
 	}, []);
 
 	useEffect(() => {
-		const interval = setInterval(() => !paused && updateFrame(), 1000);
-		return () => clearInterval(interval);
+		const handleKey = (e: KeyboardEvent) => {
+			if (e.key === ' ') {
+				setPaused((prevPaused) => !prevPaused);
+				return;
+			}
+			if (paused) return;
+
+			const moveLeft = () => {
+				// if player x is greater than 1
+				// set player x to player x - 1
+				setPlayer((p) =>
+					p.tick !== currentTick.current
+						? {
+								...p,
+								x: p.x > 1 ? p.x - 1 : p.x,
+								tick: currentTick.current,
+						  }
+						: p
+				);
+			};
+			const moveRight = () => {
+				// if player x is less than 6
+				// set player x to player x + 1
+				setPlayer((p) =>
+					p.tick !== currentTick.current
+						? {
+								...p,
+								x: p.x < 8 ? p.x + 1 : p.x,
+								tick: currentTick.current,
+						  }
+						: p
+				);
+			};
+			switch (e.key) {
+				case 'a': {
+					moveLeft();
+					break;
+				}
+
+				case 'd': {
+					moveRight();
+					break;
+				}
+
+				case 'ArrowLeft':
+					moveLeft();
+					break;
+				case 'ArrowRight':
+					moveRight();
+					break;
+			}
+		};
+
+		window.addEventListener('keydown', handleKey);
+		const interval = setInterval(() => !paused && updateFrame(), 500);
+		return () => {
+			clearInterval(interval);
+			window.removeEventListener('keydown', handleKey);
+		};
 	}, [updateFrame, paused]);
 
 	const handlePixelClick = (pixel: TFramePixel) => {
@@ -72,7 +129,7 @@ function App() {
 			</div>
 			<div className='fixed w-full top-8 px-12 flex justify-center'>
 				<div className='bg-white shadow-xl w-full py-4 rounded-xl px-6 flex justify-evenly items-center max-w-xl'>
-					<p className='text-xl'>{secondsElapsed} seconds</p>
+					<p className='text-xl'>{currentTick.current} ticks</p>
 					<div className='flex-1 inline-flex justify-center'>
 						<button
 							type='button'
