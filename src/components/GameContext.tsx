@@ -37,7 +37,7 @@ export const GameContextProvider: React.FC<{ children: React.ReactNode }> = ({
 		player: { x: 5, y: 5 },
 		paused: true,
 		tick: 0,
-		ms: 500,
+		ms: 200,
 		score: 0,
 		gameOver: false,
 		scores: [],
@@ -109,7 +109,8 @@ export const GameContextProvider: React.FC<{ children: React.ReactNode }> = ({
 			return;
 		}
 		if (object.type === 'sky') return;
-		const addScore = object.type === 'diamond' ? 100 : 5;
+		let addScore = object.type === 'diamond' ? 100 : 5;
+		addScore = (addScore / state.ms) * 1000;
 		updatePartial({
 			events: [
 				...(state.events ?? []),

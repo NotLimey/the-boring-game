@@ -22,7 +22,7 @@ const Game = () => {
 			if (e.key === ' ') {
 				return pauseUnpause();
 			}
-			if (paused) return;
+			if (paused || gameOver) return;
 
 			const moveLeft = () => {
 				// if player x is greater than 1
@@ -72,7 +72,7 @@ const Game = () => {
 		return () => {
 			window.removeEventListener('keydown', handleKey);
 		};
-	}, [pauseUnpause, paused, updateContext]);
+	}, [gameOver, pauseUnpause, paused, updateContext]);
 
 	const sortedEvents = useMemo(
 		() => events?.sort((a, b) => b.tick - a.tick) ?? [],
