@@ -1,13 +1,14 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 import { generateNewRow, getInitialFrame } from '../functions/frame';
-import { TFramePixel } from '../types';
+import { TGameEvent, TTile } from '../types';
 
 export interface IGameContextProps {
-	pixels: Array<TFramePixel>;
+	pixels: Array<TTile>;
 	player: { x: number; y: number };
 	paused: boolean;
 	tick: number;
 	ms: number;
+	events?: TGameEvent[];
 }
 
 export interface IGameContext extends IGameContextProps {
@@ -26,7 +27,7 @@ export const GameContext = createContext<IGameContext>({
 export const GameContextProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
-	const [state, setState] = useState({
+	const [state, setState] = useState<IGameContextProps>({
 		pixels: getInitialFrame(),
 		player: { x: 5, y: 5 },
 		paused: true,
@@ -56,6 +57,26 @@ export const GameContextProvider: React.FC<{ children: React.ReactNode }> = ({
 		);
 		return () => clearInterval(interval);
 	}, [state.paused, updateFrame, state.ms]);
+
+	useEffect(() => {
+		const object = state.pixels.find(
+			(p) => p.x === state.player.x && p.y === state.player.y
+		);
+		if (!object) return;
+		if (object.type === 'sky') return;
+		setState((p) => ({
+			...p,
+			events: [
+				...(p.events ?? []),
+				{
+					type: 'collision',
+					collidedWith: object,
+					tick: p.tick,
+				},
+			],
+		}));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [state.player.x, state.player.y]);
 
 	const pauseUnpause = () =>
 		setState((prev) => ({ ...prev, paused: !prev.paused }));

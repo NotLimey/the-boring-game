@@ -1,11 +1,4 @@
-import React from "react";
-
-export type TFramePixel = {
-    color: string;
-    content?: string | React.ReactNode;
-    x: number;
-    y: number;
-}
+import React, { ReactNode } from "react";
 
 export type TTreasure = {
     name: string;
@@ -21,4 +14,20 @@ export type TPlayer = {
 }
 
 export type TFrame = {
+}
+
+export type TGameEvent = TCollisionEvent;
+
+export type TCollisionEvent = {
+    type: "collision";
+    tick: number;
+    collidedWith: TTile;
+}
+
+export type TTile = {
+    type: "dirt" | "stone" | "sky" | "diamond";
+    x: number;
+    y: number;
+    children?: ReactNode;
+    bg: string;
 }

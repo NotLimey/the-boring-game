@@ -8,6 +8,7 @@ const colors = {
 
 const useGame = () => {
 	const context = useContext(GameContext);
+
 	return {
 		...context,
 		colors,

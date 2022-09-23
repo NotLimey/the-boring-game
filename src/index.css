@@ -8,7 +8,7 @@
   /* 16 rows and columns */
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
-  @apply bg-black border-4 border-black shadow-xl rounded-lg;
+  @apply bg-black border-4 border-black shadow-xl rounded-r-lg;
 }
 
 .pixel {
@@ -38,4 +38,8 @@
 
 .x-y {
   @apply text-black font-mono font-medium absolute w-full h-full text-center flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer; 
+}
+
+.output-log {
+  @apply bg-black text-white font-mono font-medium text-xs p-2 flex-col-reverse flex rounded-l-lg;
 }
