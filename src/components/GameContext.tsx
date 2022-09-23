@@ -9,6 +9,7 @@ export interface IGameContextProps {
 	tick: number;
 	ms: number;
 	events?: TGameEvent[];
+	score: number;
 }
 
 export interface IGameContext extends IGameContextProps {
@@ -22,6 +23,7 @@ export const GameContext = createContext<IGameContext>({
 	paused: true,
 	tick: 0,
 	ms: 500,
+	score: 0,
 } as IGameContext);
 
 export const GameContextProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -33,6 +35,7 @@ export const GameContextProvider: React.FC<{ children: React.ReactNode }> = ({
 		paused: true,
 		tick: 0,
 		ms: 500,
+		score: 0,
 	});
 
 	const updateFrame = useCallback(() => {
@@ -64,6 +67,7 @@ export const GameContextProvider: React.FC<{ children: React.ReactNode }> = ({
 		);
 		if (!object) return;
 		if (object.type === 'sky') return;
+		const addScore = object.type === 'diamond' ? 100 : 5;
 		setState((p) => ({
 			...p,
 			events: [
@@ -75,6 +79,7 @@ export const GameContextProvider: React.FC<{ children: React.ReactNode }> = ({
 					id: p.events?.length ?? 0,
 				},
 			],
+			score: p.score + addScore,
 		}));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.player.x, state.player.y]);

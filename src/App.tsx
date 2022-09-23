@@ -4,7 +4,7 @@ import Game from './components/Game';
 import useGame from './hooks/useGame';
 
 function App() {
-	const { pauseUnpause, paused } = useGame();
+	const { pauseUnpause, paused, score } = useGame();
 	const currentTick = useRef(0);
 
 	return (
@@ -29,7 +29,7 @@ function App() {
 							)}
 						</button>
 					</div>
-					<p>Score: 0</p>
+					<p className='font-mono'>Score: {score}</p>
 				</div>
 			</div>
 		</div>
