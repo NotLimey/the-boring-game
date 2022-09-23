@@ -97,7 +97,8 @@ export const GameContextProvider: React.FC<{ children: React.ReactNode }> = ({
 					return {
 						...p,
 						type: 'sky',
-						bg: 'bg-sky-500',
+						bg: 'bg-orange-900/50',
+						children: null,
 					};
 				}
 				return p;
@@ -107,8 +108,21 @@ export const GameContextProvider: React.FC<{ children: React.ReactNode }> = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.player.x, state.player.y]);
 
-	const pauseUnpause = () =>
+	const pauseUnpause = () => {
+		if (state.gameOver) {
+			setState({
+				pixels: getInitialFrame(),
+				player: { x: 5, y: 5 },
+				paused: false,
+				tick: 0,
+				ms: 500,
+				score: 0,
+				gameOver: false,
+			});
+			return;
+		}
 		setState((prev) => ({ ...prev, paused: !prev.paused }));
+	};
 
 	return (
 		<GameContext.Provider
