@@ -30,7 +30,15 @@ export function generateNewRow(y: number): Array<TTile> {
 
 export function getNewFrame(x: number, y: number, spawnRate = 10): TTile {
 	const random = Math.floor(Math.random() * 100);
-	if (random < spawnRate) {
+	if (random < 8) {
+		return {
+			type: 'lava',
+			x,
+			y,
+			bg: 'bg-red-500',
+		};
+	}
+	if (random < 16) {
 		const treasure = getRandomTreasure();
 		return {
 			type: treasure.name,
@@ -39,12 +47,11 @@ export function getNewFrame(x: number, y: number, spawnRate = 10): TTile {
 			x: x,
 			y: y,
 		};
-	} else {
-		return {
-			bg: 'bg-orange-900',
-			type: 'dirt',
-			x: x,
-			y: y,
-		};
 	}
+	return {
+		bg: 'bg-orange-900',
+		type: 'dirt',
+		x: x,
+		y: y,
+	};
 }

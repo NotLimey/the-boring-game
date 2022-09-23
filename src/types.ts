@@ -26,7 +26,7 @@ export type TCollisionEvent = {
 }
 
 export type TTile = {
-    type: "dirt" | "stone" | "sky" | "diamond";
+    type: "dirt" | "stone" | "sky" | "diamond" | "lava";
     x: number;
     y: number;
     children?: ReactNode;
