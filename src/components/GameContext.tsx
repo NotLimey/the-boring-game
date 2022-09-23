@@ -72,6 +72,7 @@ export const GameContextProvider: React.FC<{ children: React.ReactNode }> = ({
 					type: 'collision',
 					collidedWith: object,
 					tick: p.tick,
+					id: p.events?.length ?? 0,
 				},
 			],
 		}));

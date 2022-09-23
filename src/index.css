@@ -41,5 +41,5 @@
 }
 
 .output-log {
-  @apply bg-black text-white font-mono font-medium text-xs p-2 flex-col-reverse flex rounded-l-lg;
+  @apply bg-black text-white font-mono font-medium text-xs p-2 flex-col flex rounded-l-lg gap-y-2;
 }

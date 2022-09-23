@@ -1,18 +1,11 @@
 import clsx from 'clsx';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import useGame from '../hooks/useGame';
 import { TTile } from '../types';
 
 const Game = () => {
-	const {
-		pixels,
-		colors,
-		player,
-		paused,
-		updateContext,
-		pauseUnpause,
-		events,
-	} = useGame();
+	const { pixels, player, paused, updateContext, pauseUnpause, events } =
+		useGame();
 
 	const handlePixelClick = (pixel: TTile) => console.dir(pixel);
 
@@ -73,12 +66,23 @@ const Game = () => {
 		};
 	}, [pauseUnpause, paused, updateContext]);
 
+	const sortedEvents = useMemo(
+		() => events?.sort((a, b) => b.tick - a.tick) ?? [],
+		[events]
+	);
+
 	return (
 		<div className='flex justify-center'>
-			<div className='w-48 h-96 output-log'>
-				{events?.map((e, eIdx) => (
-					<div key={e.tick + eIdx}>
-						<div className='w-6 h-2'>{eIdx}</div>
+			<div className='w-48 h-96 output-log overflow-hidden'>
+				{sortedEvents.slice(0, 12).map((e) => (
+					<div key={e.id} className='h-5 w-full flex justify-between'>
+						<div className='flex items-center'>
+							<div className='w-8 h-full bg-stone-900 rounded-md inline-flex justify-center items-center mr-2'>
+								{e.id}
+							</div>{' '}
+							{e.collidedWith.type}
+						</div>
+						{e.collidedWith.x} / {e.collidedWith.y}
 					</div>
 				))}
 			</div>

@@ -33,7 +33,7 @@ export function getNewFrame(x: number, y: number, spawnRate = 10): TTile {
 	if (random < spawnRate) {
 		const treasure = getRandomTreasure();
 		return {
-			type: 'dirt',
+			type: treasure.name,
 			bg: 'bg-orange-900',
 			children: <div className='treasure'>{treasure.component}</div>,
 			x: x,

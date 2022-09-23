@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 
 export type TTreasure = {
-    name: string;
+    name: TTile["type"];
     component: React.ReactNode;
     value: number;
 }
@@ -22,6 +22,7 @@ export type TCollisionEvent = {
     type: "collision";
     tick: number;
     collidedWith: TTile;
+    id: number;
 }
 
 export type TTile = {
