@@ -35,7 +35,7 @@ export function getNewFrame(x: number, y: number, spawnRate = 10): TTile {
 			type: 'lava',
 			x,
 			y,
-			bg: 'bg-red-500',
+			bg: 'bg-red-600',
 		};
 	}
 	if (random < 16) {

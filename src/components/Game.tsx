@@ -116,7 +116,19 @@ const Game = () => {
 						className={clsx('pixel text-white relative', pixel.bg)}>
 						{pixel.children}
 						{pixel.x === player.x && pixel.y === player.y && (
-							<div className='player' />
+							<div
+								className={clsx(
+									'h-full w-4 mt-5 relative',
+									gameOver && 'rotate-90'
+								)}>
+								<div className='bg-black w-2 h-2 left-1 right-1 absolute' />
+								<div className='bg-black absolute top-2 w-2 h-3 left-1' />
+								<div className='bg-black absolute w-0.5 left-0 h-3 top-2' />
+								<div className='bg-black absolute w-0.5 right-0 h-3 top-2' />
+								<div className='bg-black absolute w-0.5 left-1 h-6 bottom-0' />
+								<div className='bg-black absolute w-0.5 right-1 h-6 bottom-0' />
+								<div className='bg-black absolute w-4 right-1 h-0.5 top-2 left-0' />
+							</div>
 						)}
 						<div
 							className='x-y'
