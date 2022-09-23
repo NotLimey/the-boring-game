@@ -4,8 +4,15 @@ import useGame from '../hooks/useGame';
 import { TTile } from '../types';
 
 const Game = () => {
-	const { pixels, player, paused, updateContext, pauseUnpause, events } =
-		useGame();
+	const {
+		pixels,
+		player,
+		paused,
+		updateContext,
+		pauseUnpause,
+		events,
+		gameOver,
+	} = useGame();
 
 	const handlePixelClick = (pixel: TTile) => console.dir(pixel);
 
@@ -86,7 +93,14 @@ const Game = () => {
 					</div>
 				))}
 			</div>
-			<div className='w-96 h-96 frame'>
+			<div className='w-96 h-96 frame relative'>
+				{gameOver && (
+					<div className='absolute w-full h-full flex justify-center items-center bg-black/50 z-10'>
+						<h2 className='font-mono text-3xl text-white'>
+							GAME OVER
+						</h2>
+					</div>
+				)}
 				{pixels.map((pixel, i) => (
 					<div
 						key={i}
