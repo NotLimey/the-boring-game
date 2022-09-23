@@ -32,3 +32,8 @@ export type TTile = {
     children?: ReactNode;
     bg: string;
 }
+
+export type TScore = {
+    score: number;
+    date: number;
+}

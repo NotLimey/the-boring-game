@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 import { generateNewRow, getInitialFrame } from '../functions/frame';
-import { TGameEvent, TTile } from '../types';
+import { TGameEvent, TScore, TTile } from '../types';
 
 export interface IGameContextProps {
 	pixels: Array<TTile>;
@@ -11,6 +11,7 @@ export interface IGameContextProps {
 	events?: TGameEvent[];
 	score: number;
 	gameOver: boolean;
+	scores: TScore[];
 }
 
 export interface IGameContext extends IGameContextProps {
@@ -39,7 +40,18 @@ export const GameContextProvider: React.FC<{ children: React.ReactNode }> = ({
 		ms: 500,
 		score: 0,
 		gameOver: false,
+		scores: [],
 	});
+
+	useEffect(() => {
+		const existingScores = localStorage.getItem('scores');
+		if (existingScores) {
+			setState((p) => ({
+				...p,
+				scores: JSON.parse(existingScores),
+			}));
+		}
+	}, []);
 
 	const updateFrame = useCallback(() => {
 		setState((p) => ({
@@ -55,6 +67,18 @@ export const GameContextProvider: React.FC<{ children: React.ReactNode }> = ({
 			tick: p.tick + 1,
 		}));
 	}, []);
+
+	const addScoreToScores = useCallback(
+		(score: TScore) => {
+			setState((p) => ({
+				...p,
+				scores: [...p.scores, score],
+			}));
+			const jsonScores = JSON.stringify([...state.scores, score]);
+			localStorage.setItem('scores', jsonScores);
+		},
+		[state.scores]
+	);
 
 	const updatePartial = useCallback((partial: Partial<IGameContextProps>) => {
 		setState((p) => ({
@@ -77,6 +101,10 @@ export const GameContextProvider: React.FC<{ children: React.ReactNode }> = ({
 		if (object.type === 'lava') {
 			updatePartial({
 				gameOver: true,
+			});
+			addScoreToScores({
+				score: state.score,
+				date: new Date().getTime(),
 			});
 			return;
 		}
@@ -118,6 +146,7 @@ export const GameContextProvider: React.FC<{ children: React.ReactNode }> = ({
 				ms: 500,
 				score: 0,
 				gameOver: false,
+				scores: state.scores,
 			});
 			return;
 		}

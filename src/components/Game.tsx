@@ -12,6 +12,7 @@ const Game = () => {
 		pauseUnpause,
 		events,
 		gameOver,
+		scores,
 	} = useGame();
 
 	const handlePixelClick = (pixel: TTile) => console.dir(pixel);
@@ -78,6 +79,11 @@ const Game = () => {
 		[events]
 	);
 
+	const top10Scores = useMemo(() => {
+		const sortedScores = scores.sort((a, b) => b.score - a.score);
+		return sortedScores.slice(0, 10);
+	}, [scores]);
+
 	return (
 		<div className='flex justify-center'>
 			<div className='w-48 h-96 output-log overflow-hidden'>
@@ -121,6 +127,20 @@ const Game = () => {
 								</p>
 							}
 						/>
+					</div>
+				))}
+			</div>
+			<div className='w-48 h-96 score-board overflow-hidden'>
+				{top10Scores.map((e, scoreIdx) => (
+					<div
+						key={e.date}
+						className='h-5 w-full flex justify-between'>
+						<div className='flex items-center'>
+							<div className='h-full bg-stone-900 px-2 rounded-md inline-flex justify-center items-center mr-2'>
+								{scoreIdx + 1}
+							</div>
+						</div>
+						{e.score} points
 					</div>
 				))}
 			</div>
