@@ -130,7 +130,7 @@ const Game = () => {
 								<div className='bg-black absolute w-4 right-1 h-0.5 top-2 left-0' />
 							</div>
 						)}
-						<div
+						{/* <div
 							className='x-y'
 							onClick={() => handlePixelClick(pixel)}
 							children={
@@ -138,7 +138,7 @@ const Game = () => {
 									{pixel.x}/{pixel.y}
 								</p>
 							}
-						/>
+						/> */}
 					</div>
 				))}
 			</div>

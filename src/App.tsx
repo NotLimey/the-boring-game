@@ -63,7 +63,9 @@ function App() {
 							)}
 						</button>
 					</div>
-					<p className='font-mono'>Score: {score}</p>
+					<p className='font-mono'>
+						Score: <span className='text-2xl'>{score}</span>
+					</p>
 				</div>
 			</div>
 			<Game />
@@ -74,7 +76,7 @@ function App() {
 						key={s}
 						type='button'
 						onClick={() => setSpeed(s as speed)}
-						className={`inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+						className={`inline-flex items-center px-4 py-2 border uppercase border-gray-300 shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
 							speed === s
 								? 'bg-indigo-600 text-white hover:bg-indigo-700'
 								: 'bg-white text-gray-700 hover:bg-gray-50'
