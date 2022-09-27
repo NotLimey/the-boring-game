@@ -32,9 +32,13 @@ export default class GameClass {
     }
     move(direction: "right" | "left") {
         if (direction === "right") {
-            this.player.x += 20;
+            // make sure player is not going off screen
+            if (this.player.x + 50 >= this.width) return;
+            this.player.x += 50;
         } else {
-            this.player.x -= 20;
+            // make sure player is not going off screen
+            if (this.player.x - 50 < 0) return;
+            this.player.x -= 50;
         }
     }
     draw() {
@@ -56,7 +60,10 @@ export default class GameClass {
         const tile = new TileClass(0, 0, 'skyblue', this.width, 250);
         this.tiles.push(tile);
     }
-
+    stop() {
+        // stop game
+        // stop loop
+    }
 
     // update frame 60 times per second
 }

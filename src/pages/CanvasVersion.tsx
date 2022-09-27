@@ -6,7 +6,25 @@ const CanvasVersion = () => {
 
 	useEffect(() => {
 		if (!canvas) return;
+		console.log('CanvasVersion -> canvas');
+		const handleButton = (e: KeyboardEvent) => {
+			// if key is left arrow or a
+			// move left
+			// if key is right arrow or d
+			// move right
+			if (e.key === 'ArrowLeft' || e.key === 'a') {
+				canvas.move('left');
+			}
+			if (e.key === 'ArrowRight' || e.key === 'd') {
+				canvas.move('right');
+			}
+		};
+		window.addEventListener('keydown', handleButton);
 		canvas.start();
+		return () => {
+			window.removeEventListener('keydown', handleButton);
+			canvas.stop();
+		};
 	}, [canvas]);
 
 	return (
