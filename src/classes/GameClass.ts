@@ -27,9 +27,9 @@ export default class GameClass {
             },
             {
                 depth: 1,
-                tiles: this.initializeTiles(),
+                tiles: this.generateTiles(1),
                 x: 0,
-                y: 500
+                y: 500,
             }
         ];
     }
@@ -53,7 +53,10 @@ export default class GameClass {
         for (var i = 0; i < this.scenes.length; i++) {
             this.scenes[i].y -= 2;
             if (this.scenes[i].y <= -500) {
-                this.scenes[i].y = 500;
+                const prev = this.scenes[i];
+                this.scenes.splice(i, 1);
+                const newScene = this.generateScene(prev);
+                this.scenes.push(newScene);
             }
         }
 
@@ -109,8 +112,36 @@ export default class GameClass {
         // stop loop
         clearInterval(this.interval);
     }
-    generateScene() {
+    generateScene(prev: SceneClass): SceneClass {
+        const depth = prev.depth + 2;
+        let tiles: TileClass[] = [];
 
+        const terrain = this.getTerrain(depth);
+        console.log(terrain)
+        const bg = new TileClass(0, 0, terrain, this.width, 500);
+        tiles.push(bg);
+
+        // generate new scene
+        return {
+            depth: depth,
+            tiles: tiles,
+            x: 0,
+            y: 500
+        }
+    }
+
+    generateTiles(depth: number) {
+        let tiles: TileClass[] = [];
+
+        const bg = new TileClass(0, 0, 'brown', this.width, 500);
+        tiles.push(bg);
+        return tiles;
+    }
+
+    getTerrain(depth: number) {
+        if (depth > 2)
+            return "brown";
+        return "blue";
     }
 
     // update frame 60 times per second
