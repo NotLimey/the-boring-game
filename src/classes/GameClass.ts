@@ -107,17 +107,16 @@ export default class GameClass {
         this.tiles.push(tresure);
         return this.tiles;
     }
+
     stop() {
-        // stop game
-        // stop loop
         clearInterval(this.interval);
     }
+
     generateScene(prev: SceneClass): SceneClass {
         const depth = prev.depth + 2;
         let tiles: TileClass[] = [];
-
+        console.log(depth, prev.depth)
         const terrain = this.getTerrain(depth);
-        console.log(terrain)
         const bg = new TileClass(0, 0, terrain, this.width, 500);
         tiles.push(bg);
 
@@ -139,9 +138,9 @@ export default class GameClass {
     }
 
     getTerrain(depth: number) {
-        if (depth > 2)
+        if (depth <= 1)
             return "brown";
-        return "blue";
+        return "gray";
     }
 
     // update frame 60 times per second

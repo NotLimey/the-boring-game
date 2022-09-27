@@ -1,13 +1,24 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
 import GameClass from '../classes/GameClass';
 
 const CanvasVersion = () => {
 	const canvas = useRef<GameClass | null>(null);
 
+	const setPaused = useCallback(
+		(paused: boolean) => {
+			if (!canvas.current) return;
+			if (paused) {
+				canvas.current.stop();
+			} else {
+				canvas.current.start();
+			}
+		},
+		[canvas]
+	);
+
 	useEffect(() => {
 		const c = canvas.current;
 		if (!c) return;
-		console.log('Canvas rendered');
 		const handleButton = (e: KeyboardEvent) => {
 			if (e.key === 'ArrowLeft' || e.key === 'a') {
 				c.direction = -1;
@@ -18,11 +29,9 @@ const CanvasVersion = () => {
 		};
 		window.addEventListener('keydown', handleButton);
 		window.addEventListener('keyup', () => (c.direction = 0));
-		c.start();
 		return () => {
 			window.removeEventListener('keydown', handleButton);
 			window.removeEventListener('keyup', () => (c.direction = 0));
-			c.stop();
 		};
 	}, [canvas]);
 
@@ -42,8 +51,8 @@ const CanvasVersion = () => {
 						id='canvas'
 					/>
 				</div>
-				<button onClick={() => canvas.current?.stop()}>Stop</button>
-				<button onClick={() => canvas.current?.start()}>Start</button>
+				<button onClick={() => setPaused(true)}>Stop</button>
+				<button onClick={() => setPaused(false)}>Start</button>
 			</div>
 		</div>
 	);
