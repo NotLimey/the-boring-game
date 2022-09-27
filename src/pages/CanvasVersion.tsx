@@ -1,29 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import GameClass from '../classes/GameClass';
 
 const CanvasVersion = () => {
-	const [canvas, setCanvas] = useState<GameClass | null>(null);
+	const canvas = useRef<GameClass | null>(null);
 
 	useEffect(() => {
-		if (!canvas) return;
-		console.log('CanvasVersion -> canvas');
+		const c = canvas.current;
+		if (!c) return;
+		console.log('Canvas rendered');
 		const handleButton = (e: KeyboardEvent) => {
-			// if key is left arrow or a
-			// move left
-			// if key is right arrow or d
-			// move right
 			if (e.key === 'ArrowLeft' || e.key === 'a') {
-				canvas.move('left');
+				c.direction = -1;
 			}
 			if (e.key === 'ArrowRight' || e.key === 'd') {
-				canvas.move('right');
+				c.direction = 1;
 			}
 		};
 		window.addEventListener('keydown', handleButton);
-		canvas.start();
+		window.addEventListener('keyup', () => (c.direction = 0));
+		c.start();
 		return () => {
 			window.removeEventListener('keydown', handleButton);
-			canvas.stop();
+			window.removeEventListener('keyup', () => (c.direction = 0));
+			c.stop();
 		};
 	}, [canvas]);
 
@@ -34,14 +33,17 @@ const CanvasVersion = () => {
 				<div className=''>
 					<canvas
 						ref={(ref) => {
-							if (!ref || canvas !== null) return;
-							setCanvas(new GameClass(ref));
+							if (!ref || canvas.current !== null) return;
+							canvas.current = new GameClass(ref);
 						}}
-						className='bg-stone-900 border-2 border-gray-500'
+						className='bg-stone-900 border-4 border-gray-500'
 						width='500'
 						height='500'
-						id='canvas'></canvas>
+						id='canvas'
+					/>
 				</div>
+				<button onClick={() => canvas.current?.stop()}>Stop</button>
+				<button onClick={() => canvas.current?.start()}>Start</button>
 			</div>
 		</div>
 	);
