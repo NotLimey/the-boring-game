@@ -119,6 +119,8 @@ export default class GameClass {
         const terrain = this.getTerrain(depth);
         const bg = new TileClass(0, 0, terrain, this.width, 500);
         tiles.push(bg);
+        const treasures = this.getTreasures();
+        tiles = tiles.concat(treasures);
 
         // generate new scene
         return {
@@ -134,6 +136,8 @@ export default class GameClass {
 
         const bg = new TileClass(0, 0, 'brown', this.width, 500);
         tiles.push(bg);
+        const treasures = this.getTreasures();
+        tiles = tiles.concat(treasures);
         return tiles;
     }
 
@@ -142,18 +146,40 @@ export default class GameClass {
             return "brown";
         return "gray";
     }
+    getTreasures(): TileClass[] {
+        const treasures: TileClass[] = [];
+        const tilesY = 10;
+        const tilesX = 10;
+        for (var i = 0; i < tilesX; i++) {
+            for (var j = 0; j < tilesY; j++) {
+                // randomize if treasure is generated in 1 / 10 chance
+                if (Math.floor(Math.random() * 10) !== 1) continue;
+                // make tile size 25x25
+                const x = i * 50;
+                const y = j * 50;
+                // get random color
+                const colors: TileColor[] = ['gold', 'lightblue'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+
+                const treasure = new TileClass(x, y, color, 25, 25);
+                treasures.push(treasure);
+            }
+        }
+        return treasures;
+    }
 
     // update frame 60 times per second
 }
 
+type TileColor = "red" | "green" | "blue" | "skyblue" | "brown" | "gold" | "gray" | "lightblue";
 
 export class TileClass {
     x: number;
     y: number;
-    color: string;
+    color: TileColor;
     width: number;
     height: number;
-    constructor(x: number, y: number, color: string, width = 50, height = 50) {
+    constructor(x: number, y: number, color: TileColor, width = 50, height = 50) {
         this.x = x;
         this.y = y;
         this.color = color;
