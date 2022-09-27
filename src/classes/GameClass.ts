@@ -59,6 +59,14 @@ export default class GameClass {
         // create sky
         const tile = new TileClass(0, 0, 'skyblue', this.width, 250);
         this.tiles.push(tile);
+        // create grass
+        const tile2 = new TileClass(0, 250, 'green', this.width, 50);
+        this.tiles.push(tile2);
+        // create dirt
+        const tile3 = new TileClass(0, 300, 'brown', this.width, 200);
+        this.tiles.push(tile3);
+        const tresure = new TileClass(150, 400, 'gold', 50, 50);
+        this.tiles.push(tresure);
     }
     stop() {
         // stop game
