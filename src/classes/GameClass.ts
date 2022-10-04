@@ -32,6 +32,8 @@ export default class GameClass {
                 y: 500,
             }
         ];
+        this.start();
+        this.stop();
     }
     // start the game
     start() {
@@ -60,15 +62,19 @@ export default class GameClass {
             }
         }
 
-        if (this.direction === 1) {
-            if (this.player.x + this.player.width >= this.width) return;
-            this.player.x += this.speed;
+    }
+    move(direction: "left" | "right") {
+        if (!this.player) return;
+        switch (direction) {
+            case "left":
+                if (this.player.x <= 0) return;
+                this.player.x -= 50;
+                break;
+            case "right":
+                if (this.player.x >= this.width - this.player.width) return;
+                this.player.x += 50;
+                break;
         }
-        if (this.direction === -1) {
-            if (this.player.x <= 0) return;
-            this.player.x -= this.speed;
-        }
-
     }
     draw() {
         this.clear();

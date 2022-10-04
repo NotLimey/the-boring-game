@@ -21,10 +21,10 @@ const CanvasVersion = () => {
 		if (!c) return;
 		const handleButton = (e: KeyboardEvent) => {
 			if (e.key === 'ArrowLeft' || e.key === 'a') {
-				c.direction = -1;
+				c.move('left');
 			}
 			if (e.key === 'ArrowRight' || e.key === 'd') {
-				c.direction = 1;
+				c.move('right');
 			}
 		};
 		window.addEventListener('keydown', handleButton);
